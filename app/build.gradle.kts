@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.appunidad02"
+    namespace = "com.example.unidad02"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -11,8 +11,8 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.appunidad02"
-        minSdk = 35
+        applicationId = "com.example.unidad02"
+        minSdk = 34
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -44,4 +44,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+// para cargar img del url
+    implementation("com.google.code.gson:gson:2.13.1")
+// para convertir objeto en json
+    implementation("com.google.zxing:core:3.5.3")
+// para generar qr
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+//realizar la imagen
 }

@@ -1,4 +1,4 @@
-package com.example.appunidad02
+package com.example.unidad02
 
 import org.junit.Test
 

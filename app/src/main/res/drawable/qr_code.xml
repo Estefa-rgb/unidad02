@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="128dp"
+    android:height="128dp"
+    android:viewportWidth="128"
+    android:viewportHeight="128">
+    <!-- Esquinas scanner -->
+    <path
+        android:fillColor="#673AB7"
+        android:pathData="M16,40 L16,16 L40,16 L40,24 L24,24 L24,40 Z"/>
+    <path
+        android:fillColor="#673AB7"
+        android:pathData="M88,16 L112,16 L112,40 L104,40 L104,24 L88,24 Z"/>
+    <path
+        android:fillColor="#673AB7"
+        android:pathData="M16,88 L24,88 L24,104 L40,104 L40,112 L16,112 Z"/>
+    <path
+        android:fillColor="#673AB7"
+        android:pathData="M104,88 L112,88 L112,112 L88,112 L88,104 L104,104 Z"/>
+    <!-- QR -->
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M36,36h16v16h-16z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M76,36h16v16h-16z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M36,76h16v16h-16z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M64,56h8v8h-8z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M64,68h8v8h-8z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M76,64h8v8h-8z"/>
+    <path
+        android:fillColor="#1A174D"
+        android:pathData="M84,72h8v8h-8z"/>
+</vector>

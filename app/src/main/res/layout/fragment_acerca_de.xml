@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".acercaDeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/fondoAcerca"
+        android:orientation="vertical"
+        android:padding="15sp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:paddingBottom="10sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strNombreAlumno"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:id="@+id/strNombre">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strMatricula"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="5sp"
+                android:layout_below="@id/strNombre"
+                android:id="@+id/strMatricula">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strEspecialidad"
+                android:textColor="@color/white"
+                android:paddingLeft="10sp"
+                android:paddingTop="5sp"
+                android:layout_below="@id/strMatricula"
+                android:id="@+id/strEspecialidad">
+            </TextView>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="11sp"
+                android:layout_marginTop="11sp"
+                android:src="@mipmap/estefania">
+            </ImageView>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10sp"
+            android:paddingLeft="10sp"
+            android:paddingRight="10sp"
+            android:orientation="vertical"
+            android:layout_marginTop="20sp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/strMatricula"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/txtMatricula"
+                android:paddingBottom="10sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/strNombreAlumno"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/txtNombreAlumno"
+                android:paddingBottom="10sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/strEspecialidad"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/txtEspecialidad"
+                android:paddingBottom="10sp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/strDomicilio"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/txtDomicilio"
+                android:paddingBottom="10sp"/>
+
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="150sp"
+                android:src="@drawable/alumnos"
+                android:layout_gravity="center"
+                android:paddingBottom="10sp"
+                android:id="@+id/imgFoto"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15sp">
+                <ImageView
+                    android:layout_width="150sp"
+                    android:layout_height="150sp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/alumnos"
+                    android:paddingBottom="10sp"
+                    android:id="@+id/imgQr"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/strScanner"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

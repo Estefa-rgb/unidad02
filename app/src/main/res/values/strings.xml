@@ -1,3 +1,34 @@
 <resources>
-    <string name="app_name">appUnidad02</string>
+    <string name="app_name">Unidad02</string>
+
+    <string name="strInicio"> Inicio </string>
+    <string name="strAcerca"> Acerca </string>
+    <string name="strAlumno"> Alumno </string>
+    <string name="strLista"> Listado </string>
+    <string name="strSalir"> Salir </string>
+    
+    <string name="strNombreAlumno">Maria Estefania Huerta Maldonado</string>
+    <string name="strMatricula"> 2023030545</string>
+    <string name="strEspecialidad"> Ing. Informatica </string>
+    <string name="strDomicilio"> Av del mar 1200 </string>
+    <string name="strCorreo"> 2023030623@upsin.edu.mx </string>
+    <string name="strScanner">Leer codigo QR con tu Informacion</string>
+    <string name="strImg">https://gitlab.com/uploads/-/system/user/avatar/30074894/avatar.png?width=800</string>
+
+    <!-- Inicio de -->
+    <string name="strIniciaScaner">Presione el botón para iniciar el lector de códigos QR</string>
+    <string name="strTuInformacion">Escanee la informacion</string>
+    <string name="strqr">Escanear Código QR</string>
+
+    <!-- Alumno-->
+    <string name="strGuardar">Guardar</string>
+    <string name="strLimpiar">Limpiar</string>
+    <string name="strCerrar">Cerrar</string>
+    <string name="strBuscar">Buscar</string>
+    <string-array name="strEspecialidades">
+        <item>Tecnologias de la Informacion</item>
+        <item>Biotecnologia</item>
+        <item>Mecatronica</item>
+        <item>Otra</item>
+    </string-array>
 </resources>

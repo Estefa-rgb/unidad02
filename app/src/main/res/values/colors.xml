@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="fondoAcerca">#FFC107</color>
+    <color name="fondoInicio">#FFC107</color>
+    <color name="fondoAlumno">#0E7885</color>
+    <color name="fondoLista">#C6FF00</color>
+    <color name="fondoSalir">#FF3D00</color>
+    <color name="fondoContenedor">#FF0EFF</color>
 </resources>
