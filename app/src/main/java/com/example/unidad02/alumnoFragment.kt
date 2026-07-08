@@ -16,6 +16,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.unidad02.ADO.Alumno
+import com.example.unidad02.ADO.AlumnoDB
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -33,6 +34,7 @@ class alumnoFragment : Fragment() {
     private lateinit var btnLimpiar: Button
     private lateinit var btnCerrar: Button
     private var posicion: Int = 0
+    private lateinit var db : AlumnoDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,21 +127,64 @@ class alumnoFragment : Fragment() {
             }
 
         btnBuscar.setOnClickListener {
-            val matricula = edtMatricula.text.toString()
+            if (edtMatricula.text.toString().contentEquals("")) {
 
-            if (matricula.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Se requieren que todos los campos sean rellenados",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(requireContext(), "Faltó campturar la matricula", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                var resAlumno = Alumno()
+                val db = AlumnoDB(requireContext())
+                db.openDataBase()
+
+                resAlumno = db.getAlumno(edtMatricula.text.toString())
+
+                if (resAlumno.id > 0) {
+                    edtMatricula.setText(resAlumno.matricula)
+                    edtNombre.setText(resAlumno.nombre)
+                    edtDomicilio.setText(resAlumno.domicilio)
+
+                    @Suppress("UNCHECKED_CAST")
+                    val adapter = spEspecialidad.adapter as? ArrayAdapter<String>
+                    val posicion = adapter?.getPosition(resAlumno.especialidad) ?: -1
+                    if (posicion != -1) {
+                        spEspecialidad.setSelection(posicion)
+                    }
+
+                    val gson = Gson()
+                    val jsonString = gson.toJson(resAlumno)
+
+                    val barcodeEncoder = BarcodeEncoder()
+                    val bitmap = barcodeEncoder.encodeBitmap(
+                        jsonString,
+                        BarcodeFormat.QR_CODE,
+                        1000,
+                        1000
+                    )
+                    imgQR.setImageBitmap(bitmap)
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Alumno encontrado, modifica los datos y guarda",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Alumno no encontrado, puedes agregarlo",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
             }
-        }
 
+        }
         btnGuardar.setOnClickListener {
+            val alumno = Alumno()
             val matricula = edtMatricula.text.toString()
             val nombre = edtNombre.text.toString()
             val domicilio = edtDomicilio.text.toString()
+            alumno.status = 0
 
             if (matricula.isEmpty() || nombre.isEmpty() || domicilio.isEmpty()) {
                 Toast.makeText(
@@ -148,42 +193,66 @@ class alumnoFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Datos capturados correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+                alumno.matricula = edtMatricula.text.toString()
+                alumno.nombre = edtNombre.text.toString()
+                alumno.domicilio = edtDomicilio.text.toString()
+                alumno.especialidad = spEspecialidad.selectedItem.toString()
+                alumno.foto = imgAlumno.tag?.toString() ?: ""
+                val gson = Gson()
+                alumno.qr = gson.toJson(alumno)
+                alumno.status = 0
+                val db = AlumnoDB(requireContext())
+                db.openDataBase()
 
-        btnLimpiar.setOnClickListener {
-            edtMatricula.setText("")
-            edtNombre.setText("")
-            edtDomicilio.setText("")
-            spEspecialidad.setSelection(0)
-            imgAlumno.setImageResource(R.drawable.alumnos)
-            imgQR.setImageResource(R.drawable.qr_code)
-        }
+                val existente = db.getAlumno(alumno.matricula)
+                if (existente.id > 0) {
+                    alumno.id = existente.id
+                    db.updateAlumno(alumno)
+                    Toast.makeText(
+                        requireContext(),
+                        "Datos actualizados correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    val id: Long = db.insertAlumno(alumno)
+                    Toast.makeText(
+                        requireContext(),
+                        "Datos guardados correctamente con el ID ${id}",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-        btnCerrar.setOnClickListener {
-            val builder = AlertDialog.Builder(requireContext())
-
-            builder.setTitle("Fragment alumno")
-            builder.setMessage("¿Deseas cerrar la aplicación?")
-
-            builder.setPositiveButton("Aceptar") { _, _ ->
-                requireActivity().finish()
-            }
-
-            builder.setNegativeButton("Cancelar") { _, _ ->
-                Toast.makeText(
-                    requireContext(),
-                    "Continuemos en la app",
-                    Toast.LENGTH_SHORT
-                ).show()
+                }
             }
 
-            builder.show()
+            btnLimpiar.setOnClickListener {
+                edtMatricula.setText("")
+                edtNombre.setText("")
+                edtDomicilio.setText("")
+                spEspecialidad.setSelection(0)
+                imgAlumno.setImageResource(R.drawable.alumnos)
+                imgQR.setImageResource(R.drawable.qr_code)
+            }
+
+            btnCerrar.setOnClickListener {
+                val builder = AlertDialog.Builder(requireContext())
+
+                builder.setTitle("Fragment alumno")
+                builder.setMessage("¿Deseas cerrar la aplicación?")
+
+                builder.setPositiveButton("Aceptar") { _, _ ->
+                    requireActivity().finish()
+                }
+
+                builder.setNegativeButton("Cancelar") { _, _ ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Continuemos en la app",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                builder.show()
+            }
         }
     }
 }

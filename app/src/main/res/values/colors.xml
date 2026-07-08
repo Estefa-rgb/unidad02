@@ -4,8 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="fondoAcerca">#FFC107</color>
     <color name="fondoInicio">#FFC107</color>
-    <color name="fondoAlumno">#0E7885</color>
-    <color name="fondoLista">#C6FF00</color>
+    <color name="fondoAlumno">#0F6C78</color>
+    <color name="fondoLista">#6E8327</color>
     <color name="fondoSalir">#FF3D00</color>
     <color name="fondoContenedor">#FF0EFF</color>
 </resources>

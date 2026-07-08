@@ -7,11 +7,11 @@
     <string name="strLista"> Listado </string>
     <string name="strSalir"> Salir </string>
     
-    <string name="strNombreAlumno">Maria Estefania Huerta Maldonado</string>
+    <string name="strNombreAlumno">María Estefanía Huerta Maldonado</string>
     <string name="strMatricula"> 2023030545</string>
     <string name="strEspecialidad"> Ing. Informatica </string>
     <string name="strDomicilio"> Av del mar 1200 </string>
-    <string name="strCorreo"> 2023030623@upsin.edu.mx </string>
+    <string name="strCorreo"> 2023030545@upsin.edu.mx </string>
     <string name="strScanner">Leer codigo QR con tu Informacion</string>
     <string name="strImg">https://gitlab.com/uploads/-/system/user/avatar/30074894/avatar.png?width=800</string>
 
