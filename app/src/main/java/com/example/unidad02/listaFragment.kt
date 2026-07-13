@@ -46,7 +46,7 @@ class listaFragment : Fragment() {
         cargarAlumnos()
 
         btnInicio.setOnClickListener {
-            val fragment = alumnoFragment()
+            val fragment = inicioFragment()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frmContenedor, fragment)
                 .addToBackStack(null)
