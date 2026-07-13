@@ -95,6 +95,8 @@ class alumnoFragment : Fragment() {
                 .error(R.drawable.alumnos)
                 .into(imgAlumno)
 
+            imgAlumno.tag = it.foto
+
             val gson = Gson()
             val jsonString = gson.toJson(it)
 
@@ -139,6 +141,12 @@ class alumnoFragment : Fragment() {
                 resAlumno = db.getAlumno(edtMatricula.text.toString())
 
                 if (resAlumno.id > 0) {
+                    Glide.with(requireContext())
+                        .load(resAlumno.foto)
+                        .error(R.drawable.alumnos)
+                        .into(imgAlumno)
+
+                    imgAlumno.tag = resAlumno.foto
                     edtMatricula.setText(resAlumno.matricula)
                     edtNombre.setText(resAlumno.nombre)
                     edtDomicilio.setText(resAlumno.domicilio)
@@ -197,7 +205,8 @@ class alumnoFragment : Fragment() {
                 alumno.nombre = edtNombre.text.toString()
                 alumno.domicilio = edtDomicilio.text.toString()
                 alumno.especialidad = spEspecialidad.selectedItem.toString()
-                alumno.foto = imgAlumno.tag?.toString() ?: ""
+                alumno.foto = imgAlumno.tag.toString()
+                // alumno.foto = imgAlumno.tag?.toString() ?: ""
                 val gson = Gson()
                 alumno.qr = gson.toJson(alumno)
                 alumno.status = 0
@@ -223,36 +232,36 @@ class alumnoFragment : Fragment() {
 
                 }
             }
+        }
+
+        btnLimpiar.setOnClickListener {
+            edtMatricula.setText("")
+            edtNombre.setText("")
+            edtDomicilio.setText("")
+            spEspecialidad.setSelection(0)
+            imgAlumno.setImageResource(R.drawable.alumnos)
+            imgQR.setImageResource(R.drawable.qr_code)
+        }
+
+        btnCerrar.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+
+            builder.setTitle("Fragment alumno")
+            builder.setMessage("¿Deseas cerrar la aplicación?")
+
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                requireActivity().finish()
             }
 
-            btnLimpiar.setOnClickListener {
-                edtMatricula.setText("")
-                edtNombre.setText("")
-                edtDomicilio.setText("")
-                spEspecialidad.setSelection(0)
-                imgAlumno.setImageResource(R.drawable.alumnos)
-                imgQR.setImageResource(R.drawable.qr_code)
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                Toast.makeText(
+                    requireContext(),
+                    "Continuemos en la app",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
-            btnCerrar.setOnClickListener {
-                val builder = AlertDialog.Builder(requireContext())
-
-                builder.setTitle("Fragment alumno")
-                builder.setMessage("¿Deseas cerrar la aplicación?")
-
-                builder.setPositiveButton("Aceptar") { _, _ ->
-                    requireActivity().finish()
-                }
-
-                builder.setNegativeButton("Cancelar") { _, _ ->
-                    Toast.makeText(
-                        requireContext(),
-                        "Continuemos en la app",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                builder.show()
-            }
+            builder.show()
         }
     }
+}
