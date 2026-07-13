@@ -31,4 +31,8 @@
         <item>Mecatronica</item>
         <item>Otra</item>
     </string-array>
+
+    <string name="strlstAlumnos">Listado de alumnos</string>
+    <string name="strBuscarA">Buscar Alumno</string>
+    <string name="strNuevoAlu">Agregar un nuevo alumno</string>
 </resources>

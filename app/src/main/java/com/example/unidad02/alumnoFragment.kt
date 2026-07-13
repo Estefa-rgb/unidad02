@@ -223,6 +223,7 @@ class alumnoFragment : Fragment() {
 
                 }
             }
+            }
 
             btnLimpiar.setOnClickListener {
                 edtMatricula.setText("")
@@ -255,4 +256,3 @@ class alumnoFragment : Fragment() {
             }
         }
     }
-}

@@ -3,21 +3,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/fondoLista"
+    android:id="@+id/alumnofg"
     tools:context=".listaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fondoLista">
+        android:orientation="vertical"
+        android:padding="10sp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:paddingBottom="16sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strNombreAlumno"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:id="@+id/lblNombre">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strMatricula"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:id="@+id/lblMatricula"
+                android:layout_below="@+id/lblNombre">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strEspecialidad"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
+                android:paddingTop="10sp"
+                android:id="@+id/lblMateria"
+                android:layout_below="@+id/lblMatricula">
+            </TextView>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/f1"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="11sp"
+                android:layout_marginTop="11sp"
+                android:src="@mipmap/estefania">
+            </ImageView>
+        </RelativeLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/strLista"
-            android:textSize="30sp"
-            android:textAlignment="center"
+            android:text="@string/strlstAlumnos"
+            android:textSize="20sp"
+            android:textColor="@color/fondoLista"
+            android:background="@color/black"
             android:textStyle="bold"
-            android:padding="10sp"
-            />
-    </LinearLayout>
+            android:gravity="center"/>
 
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/srvAlumnos"
+            android:layout_marginTop="4dp"
+            android:queryHint="@string/strBuscarA"
+            android:iconifiedByDefault="true"
+            style="?attr/searchViewStyle"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:id="@+id/recId"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAgregarAlumno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="90dp"
+            android:src="@android:drawable/ic_input_add"
+            app:borderWidth="2dp"
+            app:elevation="3dp"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/strNuevoAlu"/>
+
+    </LinearLayout>
 </FrameLayout>
