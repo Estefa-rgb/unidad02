@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun eventosClic() {
-        bottomNavigationView.setOnItemSelectedListener { MenuItem ->
-            when (MenuItem.itemId) {
+        bottomNavigationView.setOnItemSelectedListener { item -> // Cambiado a minúscula
+            when (item.itemId) {
                 R.id.btnInicio -> {
                     cambiarFrame(inicioFragment())
                     true

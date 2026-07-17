@@ -57,39 +57,45 @@ class DbAdapter(
         return listAlumno.size
     }
 
-    fun setOnClickListener(listener: View.OnClickListener) {
-        this.listener = listener
-    }
-
     override fun onClick(p0: View?) {
         listener?.onClick(p0)
     }
 
+    fun setOnClickListener(listener: View.OnClickListener) {
+        this.listener = listener
+    }
+
     override fun getFilter(): Filter {
         return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
                 val resultados = FilterResults()
-                if (constraint.isNullOrEmpty()) {
-                    resultados.values = listaAlumCompleta
+                if (p0.isNullOrEmpty()) {
+                    resultados.values = ArrayList(listaAlumCompleta)
+                    resultados.count = listaAlumCompleta.size
                 } else {
-                    val filtro = constraint.toString().lowercase()
-                    val filtrados = ArrayList<Alumno>()
+                    val query = p0.toString().lowercase().trim()
+                    val listaFiltrada = ArrayList<Alumno>()
+
                     for (alumno in listaAlumCompleta) {
-                        if (alumno.nombre.lowercase().contains(filtro) ||
-                            alumno.matricula.lowercase().contains(filtro)
-                        ) {
-                            filtrados.add(alumno)
+                        val coincideNombre = alumno.nombre.lowercase().startsWith(query)
+                        val coincideMatricula = alumno.matricula.lowercase().startsWith(query)
+
+                        if (coincideNombre || coincideMatricula) {
+                            listaFiltrada.add(alumno)
                         }
                     }
-                    resultados.values = filtrados
+                    resultados.values = listaFiltrada
+                    resultados.count = listaFiltrada.size
                 }
                 return resultados
             }
 
             @Suppress("UNCHECKED_CAST")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                listAlumno = results?.values as ArrayList<Alumno>
-                notifyDataSetChanged()
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                if (p1?.values != null) {
+                    listAlumno = p1.values as ArrayList<Alumno>
+                    notifyDataSetChanged()
+                }
             }
         }
     }
