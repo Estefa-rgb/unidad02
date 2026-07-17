@@ -11,12 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.unidad02.ADO.Alumno
 import com.example.unidad02.ADO.AlumnoDB
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class listaFragment : Fragment() {
@@ -70,6 +72,26 @@ class listaFragment : Fragment() {
             }
         })
 
+        adapter.setOnClickListener {
+            val pos: Int = rcvLista.getChildLayoutPosition(it)
+            val alumnoSeleccionado: Alumno = adapter.getAlumno(pos)
+
+            val bundle = Bundle().apply {
+                putSerializable("miAlumno", alumnoSeleccionado)
+            }
+
+            val fragment = alumnoFragment()
+            fragment.arguments = bundle
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frmContenedor, fragment)
+                .addToBackStack(null)
+                .commit()
+
+            val botonNavegador = requireActivity().findViewById<BottomNavigationView>(R.id.btnNavegador)
+            botonNavegador.menu.findItem(R.id.btnAlumno).isChecked = true
+        }
+
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
             override fun onMove(
@@ -84,22 +106,44 @@ class listaFragment : Fragment() {
                 val position = viewHolder.adapterPosition
                 val alumnoSeleccionado = adapter.getAlumno(position)
 
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Confirmar acción")
+                builder.setCancelable(false) // Evita que se cierre al tocar fuera de la alerta
+
                 if (direction == ItemTouchHelper.LEFT) {
-                    db.openDataBase()
-                    db.deleteAlumno(alumnoSeleccionado)
-                    db.closeDataBase()
+                    builder.setMessage("¿Deseas eliminar a ${alumnoSeleccionado.nombre} de la base de datos de forma permanente?")
 
-                    listaAlumno.remove(alumnoSeleccionado)
-                    adapter.actualizarLista(listaAlumno)
+                    builder.setPositiveButton("Sí") { _, _ ->
+                        db.openDataBase()
+                        db.deleteAlumno(alumnoSeleccionado)
+                        db.closeDataBase()
 
-                    Toast.makeText(requireContext(), "Se ha eliminado de la base de datos", Toast.LENGTH_SHORT).show()
+                        listaAlumno.remove(alumnoSeleccionado)
+                        adapter.actualizarLista(listaAlumno)
+
+                        Toast.makeText(requireContext(), "Se ha eliminado de la base de datos", Toast.LENGTH_SHORT).show()
+                    }
+
+                    builder.setNegativeButton("No") { _, _ ->
+                        adapter.notifyItemChanged(position)
+                    }
 
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    listaAlumno.remove(alumnoSeleccionado)
-                    adapter.actualizarLista(listaAlumno)
+                    builder.setMessage("¿Deseas quitar a ${alumnoSeleccionado.nombre} solo de la lista visual?")
 
-                    Toast.makeText(requireContext(), "Se ha eliminado de la lista", Toast.LENGTH_SHORT).show()
+                    builder.setPositiveButton("Sí") { _, _ ->
+                        listaAlumno.remove(alumnoSeleccionado)
+                        adapter.actualizarLista(listaAlumno)
+
+                        Toast.makeText(requireContext(), "Se ha eliminado de la lista", Toast.LENGTH_SHORT).show()
+                    }
+
+                    builder.setNegativeButton("No") { _, _ ->
+                        adapter.notifyItemChanged(position)
+                    }
                 }
+
+                builder.show()
             }
 
             override fun onChildDraw(
@@ -124,7 +168,6 @@ class listaFragment : Fragment() {
                 val horizontalMargin = 50
 
                 if (dX < 0) {
-
                     val background = ColorDrawable(Color.parseColor("#F44336"))
                     val deleteIcon = ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_menu_delete)
 
@@ -144,7 +187,6 @@ class listaFragment : Fragment() {
                         c.drawText("Eliminar de la BD", iconLeft.toFloat() - 20f, textY, paint)
                     }
                 } else if (dX > 0) {
-
                     val background = ColorDrawable(Color.parseColor("#FF9800"))
                     val removeIcon = ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
 
