@@ -2,6 +2,7 @@ package com.example.unidad02
 
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -69,7 +70,7 @@ class listaFragment : Fragment() {
             }
         })
 
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -81,16 +82,24 @@ class listaFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val alumnoAEliminar = adapter.getAlumno(position)
+                val alumnoSeleccionado = adapter.getAlumno(position)
 
-                db.openDataBase()
-                db.deleteAlumno(alumnoAEliminar)
-                db.closeDataBase()
+                if (direction == ItemTouchHelper.LEFT) {
+                    db.openDataBase()
+                    db.deleteAlumno(alumnoSeleccionado)
+                    db.closeDataBase()
 
-                listaAlumno.remove(alumnoAEliminar)
-                adapter.actualizarLista(listaAlumno)
+                    listaAlumno.remove(alumnoSeleccionado)
+                    adapter.actualizarLista(listaAlumno)
 
-                Toast.makeText(requireContext(), "Alumno eliminado exitosamente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Se ha eliminado de la base de datos", Toast.LENGTH_SHORT).show()
+
+                } else if (direction == ItemTouchHelper.RIGHT) {
+                    listaAlumno.remove(alumnoSeleccionado)
+                    adapter.actualizarLista(listaAlumno)
+
+                    Toast.makeText(requireContext(), "Se ha eliminado de la lista", Toast.LENGTH_SHORT).show()
+                }
             }
 
             override fun onChildDraw(
@@ -103,29 +112,56 @@ class listaFragment : Fragment() {
                 isCurrentlyActive: Boolean
             ) {
                 val itemView = viewHolder.itemView
-                val background = ColorDrawable(Color.parseColor("#F44336"))
 
-                val deleteIcon = ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_menu_delete)
+                val paint = Paint().apply {
+                    color = Color.WHITE
+                    textSize = 42f
+                    isAntiAlias = true
+                    isFakeBoldText = true
+                }
+
+                val textY = itemView.top.toFloat() + (itemView.height.toFloat() / 2) + (paint.textSize / 3)
+                val horizontalMargin = 50
 
                 if (dX < 0) {
 
-                    background.setBounds(
-                        itemView.right + dX.toInt(),
-                        itemView.top,
-                        itemView.right,
-                        itemView.bottom
-                    )
+                    val background = ColorDrawable(Color.parseColor("#F44336"))
+                    val deleteIcon = ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_menu_delete)
+
+                    background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
                     background.draw(c)
 
                     deleteIcon?.let {
-                        val iconMargin = (itemView.height - it.intrinsicHeight) / 2
                         val iconTop = itemView.top + (itemView.height - it.intrinsicHeight) / 2
                         val iconBottom = iconTop + it.intrinsicHeight
-                        val iconLeft = itemView.right - iconMargin - it.intrinsicWidth
-                        val iconRight = itemView.right - iconMargin
+                        val iconRight = itemView.right - horizontalMargin
+                        val iconLeft = iconRight - it.intrinsicWidth
 
                         it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                         it.draw(c)
+
+                        paint.textAlign = Paint.Align.RIGHT
+                        c.drawText("Eliminar de la BD", iconLeft.toFloat() - 20f, textY, paint)
+                    }
+                } else if (dX > 0) {
+
+                    val background = ColorDrawable(Color.parseColor("#FF9800"))
+                    val removeIcon = ContextCompat.getDrawable(requireContext(), android.R.drawable.ic_menu_close_clear_cancel)
+
+                    background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+                    background.draw(c)
+
+                    removeIcon?.let {
+                        val iconTop = itemView.top + (itemView.height - it.intrinsicHeight) / 2
+                        val iconBottom = iconTop + it.intrinsicHeight
+                        val iconLeft = itemView.left + horizontalMargin
+                        val iconRight = iconLeft + it.intrinsicWidth
+
+                        it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        it.draw(c)
+
+                        paint.textAlign = Paint.Align.LEFT
+                        c.drawText("Eliminar de la lista", iconRight.toFloat() + 20f, textY, paint)
                     }
                 }
 

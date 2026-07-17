@@ -131,7 +131,7 @@ class alumnoFragment : Fragment() {
         btnBuscar.setOnClickListener {
             if (edtMatricula.text.toString().contentEquals("")) {
 
-                Toast.makeText(requireContext(), "Faltó campturar la matricula", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Faltó capturar la matricula", Toast.LENGTH_SHORT)
                     .show()
             } else {
                 var resAlumno = Alumno()
@@ -182,8 +182,6 @@ class alumnoFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
-
             }
 
         }
@@ -206,7 +204,6 @@ class alumnoFragment : Fragment() {
                 alumno.domicilio = edtDomicilio.text.toString()
                 alumno.especialidad = spEspecialidad.selectedItem.toString()
                 alumno.foto = imgAlumno.tag.toString()
-                // alumno.foto = imgAlumno.tag?.toString() ?: ""
                 val gson = Gson()
                 alumno.qr = gson.toJson(alumno)
                 alumno.status = 0
@@ -223,13 +220,15 @@ class alumnoFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val id: Long = db.insertAlumno(alumno)
+                    // AQUÍ ESTÁ LA CORRECCIÓN DEL CONTEO
+                    db.insertAlumno(alumno)
+                    val totalAlumnos = db.getAlumnos().size // Obtenemos el total real
+
                     Toast.makeText(
                         requireContext(),
-                        "Datos guardados correctamente con el ID ${id}",
+                        "Datos guardados. Total en lista: $totalAlumnos",
                         Toast.LENGTH_SHORT
                     ).show()
-
                 }
             }
         }

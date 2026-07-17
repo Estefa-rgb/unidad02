@@ -69,21 +69,35 @@ class DbAdapter(
         return object : Filter() {
             override fun performFiltering(p0: CharSequence?): FilterResults {
                 val resultados = FilterResults()
+
                 if (p0.isNullOrEmpty()) {
-                    resultados.values = ArrayList(listaAlumCompleta)
-                    resultados.count = listaAlumCompleta.size
+                    val listaOrdenada = listaAlumCompleta.sortedWith(compareBy({ it.nombre.lowercase() }, { it.matricula }))
+                    resultados.values = ArrayList(listaOrdenada)
+                    resultados.count = listaOrdenada.size
                 } else {
                     val query = p0.toString().lowercase().trim()
                     val listaFiltrada = ArrayList<Alumno>()
 
                     for (alumno in listaAlumCompleta) {
-                        val coincideNombre = alumno.nombre.lowercase().startsWith(query)
-                        val coincideMatricula = alumno.matricula.lowercase().startsWith(query)
+                        val palabrasNombre = alumno.nombre.lowercase().split(" ")
+
+                        val coincideNombre = palabrasNombre.any { palabra ->
+                            palabra.startsWith(query)
+                        }
+
+                        val coincideMatricula = alumno.matricula.lowercase().contains(query)
 
                         if (coincideNombre || coincideMatricula) {
                             listaFiltrada.add(alumno)
                         }
                     }
+
+                    if (query.all { it.isDigit() }) {
+                        listaFiltrada.sortBy { it.matricula }
+                    } else {
+                        listaFiltrada.sortBy { it.nombre.lowercase() }
+                    }
+
                     resultados.values = listaFiltrada
                     resultados.count = listaFiltrada.size
                 }
@@ -105,8 +119,9 @@ class DbAdapter(
     }
 
     fun actualizarLista(lista: ArrayList<Alumno>) {
-        listAlumno = lista
-        listaAlumCompleta = ArrayList(lista)
+        val listaOrdenada = lista.sortedWith(compareBy({ it.nombre.lowercase() }, { it.matricula }))
+        listAlumno = ArrayList(listaOrdenada)
+        listaAlumCompleta = ArrayList(listaOrdenada)
         notifyDataSetChanged()
     }
 }
