@@ -79,13 +79,11 @@ class DbAdapter(
                     val listaFiltrada = ArrayList<Alumno>()
 
                     for (alumno in listaAlumCompleta) {
-                        val palabrasNombre = alumno.nombre.lowercase().split(" ")
+                        val nombre = alumno.nombre.lowercase()
+                        val matricula = alumno.matricula.lowercase()
 
-                        val coincideNombre = palabrasNombre.any { palabra ->
-                            palabra.startsWith(query)
-                        }
-
-                        val coincideMatricula = alumno.matricula.lowercase().contains(query)
+                        val coincideNombre = nombre.contains(query)
+                        val coincideMatricula = matricula.contains(query)
 
                         if (coincideNombre || coincideMatricula) {
                             listaFiltrada.add(alumno)
@@ -95,7 +93,11 @@ class DbAdapter(
                     if (query.all { it.isDigit() }) {
                         listaFiltrada.sortBy { it.matricula }
                     } else {
-                        listaFiltrada.sortBy { it.nombre.lowercase() }
+                        listaFiltrada.sortBy {
+                            it.nombre.lowercase().indexOf(query).let { pos ->
+                                if (pos == -1) Int.MAX_VALUE else pos
+                            }
+                        }
                     }
 
                     resultados.values = listaFiltrada
